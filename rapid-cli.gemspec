@@ -24,5 +24,12 @@ Gem::Specification.new do |s|
 Rapid is a simple command-line toolset to see diff for files in a git
 repository more useful when it has more than one modified files.
 END_DESC
+	
+	s.add_dependency "highline", "~> 1.6.21"
+
+	s.add_development_dependency "bundler"
+	s.add_development_dependency "rspec", "~> 2.14"
+	s.add_development_dependency "rake"
+	s.add_development_dependency "simplecov"
 end
 
