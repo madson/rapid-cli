@@ -2,29 +2,18 @@ require 'rubygems'
 require 'highline/import'
 
 module Version
+  class InvalidFormat < Exception; end
+  
 	class << self
 
 		COMMANDS = ['major', 'minor', 'patch']
 		REGEX = /^([0-9]+)\.?([0-9]*)\.?([0-9]*)/
-		
-		def run
-			version = ARGV[0]
-			command = ARGV[1]
-
-			unless ARGV.size > 1 or version =~ REGEX
-				puts 'Usage: version <version> <command>'
-				puts
-				puts 'Commands:'
-				puts "\tmajor\tUpgrade major number"
-				puts "\tminor\tUpgrade minor number"
-				puts "\tpatch\tUpgrade patch number"
-				puts
-				puts 'Example:'
-				puts "\tversion 1.3.5 minor"
-				exit 0
-			end
-
-			parts = version.scan(REGEX)
+    
+    def upgrade_version version, command = nil
+      raise ArgumentError unless version
+      raise InvalidFormat unless version.to_s =~ REGEX
+      
+			parts = version.to_s.scan(REGEX)
 			parts = parts.first
 			parts.map! { |i| i.to_i }
 
@@ -43,7 +32,28 @@ module Version
 				patch += 1
 			end
 
-			puts "#{major}.#{minor}.#{patch}"
+			"#{major}.#{minor}.#{patch}"      
+    end
+		
+		def run
+			version = ARGV[0]
+			command = ARGV[1]
+      
+			unless ARGV.size > 1 or version =~ REGEX
+				puts 'Usage: version <version> <command>'
+				puts
+				puts 'Commands:'
+				puts "\tmajor\tUpgrade major number"
+				puts "\tminor\tUpgrade minor number"
+				puts "\tpatch\tUpgrade patch number"
+				puts
+				puts 'Example:'
+				puts "\tversion 1.3.5 minor"
+				exit 0
+			end
+
+      puts upgrade_version version, command
+
 			exit 1
 		end # run
 	
