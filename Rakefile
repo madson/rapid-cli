@@ -4,7 +4,7 @@ require "bundler/gem_tasks"
 desc "Run specs"
 RSpec::Core::RakeTask.new do |t|
   t.verbose = false
-  t.rspec_opts = '--color --order random --format documentation'
+  t.rspec_opts = '--color --format documentation'
 end
 
 task :default => :spec
